@@ -1,0 +1,3 @@
+[submodule "fabric-main"]
+	path = fabric-main
+	url = https://github.com/rasgiza/Fabric-Payer-Provider-HealthCare-Demo.git
