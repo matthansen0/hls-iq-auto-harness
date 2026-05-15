@@ -1,6 +1,6 @@
 # HLS IQ Automation Harness
 
-Automation orchestration layer for the **Fabric Payer-Provider Healthcare Demo**, built to streamline deployment, configuration, and operational excellence for the healthcare intelligence solution.
+Automation orchestration layer for the [Fabric Payer-Provider Healthcare Demo](https://github.com/rasgiza/Fabric-Payer-Provider-HealthCare-Demo), built to streamline deployment, configuration, and operational excellence for the healthcare intelligence solution.
 
 ## Overview
 
@@ -12,34 +12,19 @@ This repository provides:
 
 The **Fabric main demo** is pulled in as a submodule (`fabric-main/`), allowing this automation harness to orchestrate and extend its capabilities without duplicating content.
 
-## Repository Structure
-
-```
-.
-├── fabric-main/                    # Main demo repo (git submodule)
-│   └── [All content from rasgiza/Fabric-Payer-Provider-HealthCare-Demo]
-│
-├── scripts/
-│   └── automation/                 # Orchestration & automation scripts
-│       ├── create_orchestrator_agent.py
-│       ├── test_orchestrator_agent.py
-│       └── verify_and_reset_indexer.sh
-│
-├── config/
-│   ├── azure.yaml                  # AzD environment configuration
-│   └── devcontainer.json           # Dev container setup
-│
-├── docs/
-│   └── AZD_AUTOMATION_GUIDE.md     # Complete automation walkthrough
-│
-└── README.md                        # This file
-```
 
 ## Quick Start
 
 ### Prerequisites
 - **Docker** (for dev container)
 - **VS Code** with Dev Containers extension
+
+#### Enable following Fabric Tenant settings: 
+- Service Principals can use Fabric APIs
+- User can create Graph
+- User can create Ontology
+- Enable Operations Agent
+
 
 ### Deploy in 4 Steps
 
@@ -57,27 +42,27 @@ The **Fabric main demo** is pulled in as a submodule (`fabric-main/`), allowing 
 
 3. **Authenticate to Azure:**
    ```bash
-   az login
-   azd auth login
+   az login --use-device-code
+   azd auth login --use-device-code
    ```
 
 4. **Deploy everything:**
    ```bash
-   ./scripts/azd/run_all.sh
+   bash scripts/azd/run_all.sh
    ```
+
+> [!NOTE]
+> *Due to model availability and capacity constraints, for lab and demo environments as of 5/15/26 Sweeden Central is the reccomended region for deployment.*
+   
 
 That's it! The deployment is fully automated. See [AZD_AUTOMATION_GUIDE.md](docs/AZD_AUTOMATION_GUIDE.md) for troubleshooting and detailed information.
 
-## Key Components
+4. **Cleanup:**
+   ```bash
+   bash scripts/azd/cleanup.sh
+   ```
 
-### Automation Scripts (`scripts/automation/`)
-- **create_orchestrator_agent.py** — Provisions the Healthcare IQ orchestrator agent
-- **test_orchestrator_agent.py** — Validates orchestrator agent functionality
-- **verify_and_reset_indexer.sh** — Manages search index verification
-
-### Configuration (`config/`)
-- **azure.yaml** — AzD environment, hooks, and deployment parameters
-- **devcontainer.json** — Dev container definition for standardized environment
+When you're all done, you can pause the Fabric capacity, or if you want you can use the cleanup script to fully cleanup the Azure and Fabric environments. 
 
 ### Documentation (`docs/`)
 - **AZD_AUTOMATION_GUIDE.md** — Step-by-step deployment and automation documentation
@@ -91,22 +76,6 @@ That's it! The deployment is fully automated. See [AZD_AUTOMATION_GUIDE.md](docs
 3. Run: `./scripts/azd/run_all.sh`
 4. Monitor the deployment logs
 
-Everything is preconfigured—no manual setup needed.
-
-### Extending the Harness
-
-- Add new automation scripts to `scripts/automation/`
-- Add new provisioning hooks to `scripts/azd/`
-- Update `docs/AZD_AUTOMATION_GUIDE.md` with any changes
-
-## Main Demo Integration
-
-The Fabric demo (`fabric-main/`) is included as a git submodule and automatically cloned when you initialize the container. All deployment scripts use the content from this submodule.
-
-To update to the latest main demo version:
-```bash
-git submodule update --remote
-```
 
 ## Documentation
 
