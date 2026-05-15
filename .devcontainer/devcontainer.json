@@ -1,5 +1,5 @@
 {
-  "name": "Fabric Healthcare Demo",
+  "name": "hls-iq-auto-harness",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {},
