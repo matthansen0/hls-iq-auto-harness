@@ -38,31 +38,35 @@ The **Fabric main demo** is pulled in as a submodule (`fabric-main/`), allowing 
 ## Quick Start
 
 ### Prerequisites
-- **Azure CLI** (az)
-- **Azure Developer CLI** (azd)
-- **Python 3.9+**
-- **Git** (with submodule support)
+- **Docker** (for dev container)
+- **VS Code** with Dev Containers extension
 
-### Clone & Initialize
+### Deploy in 4 Steps
 
-```bash
-git clone https://github.com/matthansen0/hls-iq-auto-harness.git
-cd hls-iq-auto-harness
-git submodule update --init --recursive
-```
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/matthansen0/hls-iq-auto-harness.git
+   cd hls-iq-auto-harness
+   ```
 
-### Deploy with AzD
+2. **Open in dev container** (VS Code):
+   - Open the folder in VS Code
+   - Click "Reopen in Container" when prompted
+   - (Or use Command Palette: `Dev Containers: Reopen in Container`)
+   - Wait for container to build and start (~2-3 min)
 
-```bash
-# Set your environment
-azd config set defaults.subscription <SUBSCRIPTION_ID>
-azd config set defaults.location <LOCATION>
+3. **Authenticate to Azure:**
+   ```bash
+   az login
+   azd auth login
+   ```
 
-# Provision infrastructure and deploy
-azd up
-```
+4. **Deploy everything:**
+   ```bash
+   ./scripts/azd/run_all.sh
+   ```
 
-See [AZD_AUTOMATION_GUIDE.md](docs/AZD_AUTOMATION_GUIDE.md) for detailed walkthrough.
+That's it! The deployment is fully automated. See [AZD_AUTOMATION_GUIDE.md](docs/AZD_AUTOMATION_GUIDE.md) for troubleshooting and detailed information.
 
 ## Key Components
 
@@ -80,33 +84,34 @@ See [AZD_AUTOMATION_GUIDE.md](docs/AZD_AUTOMATION_GUIDE.md) for detailed walkthr
 
 ## Workflow
 
-### Development
+### Standard Deployment
 
-1. Clone this repo and initialize submodules
-2. Use dev container for consistent environment: `Dev Containers: Reopen in Container`
-3. Test scripts locally before deployment
-4. Run `azd up` to provision and deploy
+1. Open in dev container: `Dev Containers: Reopen in Container`
+2. Login: `az login && azd auth login`
+3. Run: `./scripts/azd/run_all.sh`
+4. Monitor the deployment logs
 
-### Extending
+Everything is preconfigured—no manual setup needed.
+
+### Extending the Harness
 
 - Add new automation scripts to `scripts/automation/`
-- Update `azure.yaml` to hook new provisioning steps
-- Document changes in `docs/`
+- Add new provisioning hooks to `scripts/azd/`
+- Update `docs/AZD_AUTOMATION_GUIDE.md` with any changes
 
-## Integration with Main Demo
+## Main Demo Integration
 
-The main Fabric demo (`fabric-main/`) is included as a git submodule. To pull latest changes:
+The Fabric demo (`fabric-main/`) is included as a git submodule and automatically cloned when you initialize the container. All deployment scripts use the content from this submodule.
 
+To update to the latest main demo version:
 ```bash
 git submodule update --remote
 ```
 
-This harness orchestrates deployments but does not duplicate demo content—allowing clean separation of automation concerns from core application logic.
-
 ## Documentation
 
-- [AZD Automation Guide](docs/AZD_AUTOMATION_GUIDE.md) — Comprehensive deployment walkthrough
-- [Main Demo README](fabric-main/README.md) — Healthcare demo architecture & features
+- [AZD Automation Guide](docs/AZD_AUTOMATION_GUIDE.md) — Comprehensive deployment details
+- [Contributing](CONTRIBUTING.md) — Development setup and guidelines
 
 ## Support & Troubleshooting
 
