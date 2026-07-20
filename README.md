@@ -34,6 +34,8 @@ To remove an environment later:
 ./scripts/azd/cleanup.sh --env-name <environment> --remove-env
 ```
 
+If you deployed with `./scripts/azd/run_all.sh` and did not pass `--env-name`, the default azd environment name is `healthcare-demo`. To verify the current local azd environment, run `azd env list`.
+
 ## Automation Flow
 
 ### Fabric
