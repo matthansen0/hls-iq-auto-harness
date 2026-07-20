@@ -12,20 +12,6 @@ This repository provides:
 
 The **Fabric main demo** is pulled in as a submodule (`fabric-main/`), allowing this automation harness to orchestrate and extend its capabilities without duplicating content.
 
-### Why The Healthcare Knowledge Corpus Is Tracked
-
-`fabric-main/healthcare_knowledge/` is runtime test/demo data, not deployment implementation. The 26 Markdown files total about 273 KB, contain no real patient data, and let every environment build the same governed policy source without downloading tenant-specific or mutable external content. The launcher uploads this corpus to `lh_gold_curated/Files/healthcare_knowledge/`, and Azure AI Search ingests that OneLake folder.
-
-The corpus is required for the certified comparison:
-
-- An indexed OneLake knowledge source generates the Search data source, skillset, vector index, and indexer.
-- The IQ orchestrator uses the generated chunks for completed, cited policy MCP calls and hybrid data-plus-policy answers.
-- The non-IQ agent uses the same corpus to demonstrate policy retrieval while correctly declining live-data questions.
-- Four of the 12 live certification checks directly require the Search corpus; deployment also fails closed when the configured corpus is absent.
-
-Removing it would intentionally change this project into a data-only Fabric demo and eliminate the IQ/non-IQ policy comparison. Keep policy documents environment-neutral and synthetic; never add organization-confidential guidance or PHI.
-
-
 ## Quick Start
 
 ### Prerequisites
@@ -88,23 +74,16 @@ When you're all done, you can pause the Fabric capacity, or if you want you can 
 3. Run: `./scripts/azd/run_all.sh`
 4. Monitor the deployment logs
 
-## Foundry Completion Automation
+## Foundry Automation
 
-`scripts/azd/postprovision.py` now invokes `scripts/automation/automate_foundry_remaining.py` by default.
+After the upstream Fabric launcher completes, `scripts/azd/postprovision.py` runs the root-owned Foundry automation:
 
-This automates:
-- Fabric Data Agent discovery by name in the deployed workspace
-- Data Agent table selection, lakehouse-only routing, datasource metadata, and few-shot synchronization
-- Foundry Fabric IQ `RemoteTool` connection to the published Data Agent MCP endpoint
-- Azure AI Search `indexedOneLake` policy knowledge source, generated ingestion pipeline, and readiness validation
-- Azure AI Search extractive knowledge base creation/update
-- Foundry project RemoteTool connection to the KB MCP endpoint
-- IQ orchestrator create/update with:
-   - `fabric_iq_preview`
-  - `mcp` (`knowledge_base_retrieve`)
-  - optional `web_search_preview`
-- Non-IQ policy-only comparison agent create/update
-- Direct Lake, direct MCP, KB MCP, IQ/non-IQ, citation, and cross-path consistency tests
+1. Creates the Foundry project, deploys the chat and embedding models, and applies required RBAC.
+2. Resolves and publishes the upstream Fabric Data Agent with the certified lakehouse-only table selection, instructions, and few-shot examples.
+3. Connects Foundry to the published Data Agent MCP endpoint through a Fabric IQ `RemoteTool` using delegated `UserEntraToken` authentication.
+4. Creates the Azure AI Search `indexedOneLake` source, generated ingestion pipeline, and extractive knowledge base, then waits for ingestion readiness.
+5. Creates the knowledge-base MCP project connection and deploys the IQ and non-IQ agent versions with source-controlled instructions.
+6. Runs Direct Lake, MCP, citation, hybrid, approval, and cross-path consistency checks, then writes the environment-specific demo handoff.
 
 ## Certification
 
