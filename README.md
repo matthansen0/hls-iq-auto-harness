@@ -2,6 +2,8 @@
 
 One-command deployment and certification for the [Fabric Payer-Provider Healthcare Demo](https://github.com/rasgiza/Fabric-Payer-Provider-HealthCare-Demo). The upstream Fabric solution is pinned as the `fabric-main/` submodule; this root repository contains only infrastructure, orchestration, validation, and operator tooling.
 
+[![repologbook.com](https://repoanalyticsprod4rquhaw.z19.web.core.windows.net/badges/RTfGMY41UD80tPjMFhBFZg.svg)](https://repologbook.com/)
+
 ## Overview
 
 - Provisions Azure and Microsoft Fabric resources with Azure Developer CLI (`azd`).
